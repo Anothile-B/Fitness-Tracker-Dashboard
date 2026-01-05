@@ -73,7 +73,7 @@ button.ghost{background:transparent;border:1px solid var(--accent);color:var(--a
 .badge.unlocked{animation:glow 1.4s infinite alternate}
 @keyframes glow{from{box-shadow:0 0 8px var(--accent)}to{box-shadow:0 0 14px #ff00ff}}
 
-/* MODAL (gender selection) */
+/* Model gender selection */
 .modal{
   position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);z-index:999;visibility:hidden;opacity:0;transition:opacity .18s,visibility .18s;
 }
