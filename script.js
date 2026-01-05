@@ -281,7 +281,7 @@ function loadUI(){
 }
 (function init(){
   buildChart();
-  // ensure avatar exists for chosen gender if needed
+  // ensure avatar exists for chosen gender if needed 
   if(profile && profile.gender && !profile.avatar){
     profile.avatar = profile.gender==='female' ? 'images/female-avatar.png' : 'images/male-avatar.png';
     localStorage.setItem(KEY_PROFILE, JSON.stringify(profile));
