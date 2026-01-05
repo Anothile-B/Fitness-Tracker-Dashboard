@@ -89,5 +89,5 @@ button.ghost{background:transparent;border:1px solid var(--accent);color:var(--a
 @media(max-width:980px){
   .container{flex-direction:column;padding:12px}
   .right-col{width:100%}
-  .modal-content{width:92%}
+  .modal-content{width:92%} 
 }
