@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Fitness Tracker — Dashboard</title>
+
+  <!-- Chart.js UMD (specific version avoids sourcemap warning) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Fitness Tracker</div>
+    <div class="top-actions">
+      <button id="darkmode-btn" class="small" onclick="toggleDarkMode()">Dark</button>
+    </div>
+  </header>
+
+  <!-- GENDER MODAL (popup) -->
+  <!-- GENDER MODAL -->
+<div id="genderModal" class="modal">
+  <div class="modal-content">
+    <h3>Select your profile</h3>
+    <div class="gender-select">
+      <div class="gender-option" data-gender="male">
+        <img src="images/male.jpg">
+        <span>Male</span>
+      </div>
+      <div class="gender-option" data-gender="female">
+        <img src="images/female.jpg">
+        <span>Female</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <main class="container">
+    <!-- LEFT COLUMN -->
+    <section class="left-col">
+
+      <!-- PROFILE CARD (no upload) -->
+      <div class="card" id="profileCard">
+        <h2>Profile</h2>
+        <div class="profile-row">
+          <div class="avatar-area">
+            <div id="avatarPlaceholder" class="avatar-placeholder">YOU</div>
+          </div>
+
+          <div class="profile-form">
+            <input id="username" placeholder="Name" />
+            <div class="row">
+              <input id="age" type="number" placeholder="Age" />
+              <input id="weight" type="number" placeholder="Weight (kg)" />
+              <input id="height" type="number" placeholder="Height (cm)" />
+            </div>
+            <div class="row">
+              <button onclick="saveProfile()">Save Profile</button>
+              <button class="ghost small" onclick="clearProfile()">Clear</button>
+            </div>
+            <p id="bmiDisplay" class="muted"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADD WORKOUT -->
+      <div class="card">
+        <h2>Add Workout</h2>
+
+        <!-- Workout Cards (horizontal row with small images) -->
+        <div class="workout-cards">
+          <div class="workout-card" data-type="cardio">
+            <img src="images/cardio.jpg" alt="Cardio">
+            <span>Cardio</span>
+          </div>
+          <div class="workout-card" data-type="strength">
+            <img src="images/strength.jpg" alt="Strength">
+            <span>Strength</span>
+          </div>
+          <div class="workout-card" data-type="flexibility">
+            <img src="images/flexibility.jpg" alt="Flexibility">
+            <span>Flexibility</span>
+          </div>
+          <div class="workout-card" data-type="balance">
+            <img src="images/balance.jpg" alt="Balance">
+            <span>Balance</span>
+          </div>
+        </div>
+        <input type="hidden" id="type" value="cardio">
+
+        <div class="row workout-inputs">
+          <input id="duration" type="number" placeholder="Duration (min)" />
+          <input id="intensity" type="number" placeholder="Intensity (1-10)" min="1" max="10" />
+        </div>
+
+        <div class="row" style="align-items:center;margin-top:8px">
+          <div>
+            <button onclick="estimateCalories()">Estimate Calories</button>
+            <span id="estCalories" class="muted">—</span>
+          </div>
+          <div style="margin-left:auto">
+            <button onclick="addWorkout()">Add Workout</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="card">
+        <h2>Workout History</h2>
+        <div class="row">
+          <button onclick="downloadCSV()">Download CSV</button>
+          <button class="ghost" onclick="clearAll()">Clear All</button>
+        </div>
+        <ul id="workout-list" class="history-list"></ul>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN -->
+    <section class="right-col">
+
+      <!-- DASHBOARD SUMMARY -->
+      <div class="card">
+        <h2>Summary</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-value" id="sumWorkouts">0</div>
+            <div class="summary-label">Workouts</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="sumMinutes">0</div>
+            <div class="summary-label">Minutes</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-value" id="sumCalories">0</div>
+            <div class="summary-label">Calories</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART + RINGS -->
+      <div class="card charts-card">
+        <h2>Progress Chart (last 14 days)</h2>
+        <div class="charts-row">
+          <div class="chart-wrap">
+            <canvas id="fitnessChart"></canvas>
+            <canvas id="streakChart" height="150" style="margin-top:16px"></canvas>
+          </div>
+
+          <div class="rings">
+            <canvas id="ringCalories" width="150" height="150" class="ring"></canvas>
+            <canvas id="ringMinutes" width="150" height="150" class="ring"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CALORIE BURN INFO -->
+      <div class="card">
+        <h2>Calorie Burn Calculator</h2>
+        <p class="muted">Uses MET-style estimates. Provide weight in profile for accurate results.</p>
+        <div class="row">
+          <select id="calcType">
+            <option value="cardio">Cardio</option>
+            <option value="strength">Strength</option>
+            <option value="flexibility">Flexibility</option>
+            <option value="balance">Balance</option>
+          </select>
+          <input id="calcDuration" type="number" placeholder="Minutes" />
+          <button onclick="calcCalories()">Calculate</button>
+        </div>
+        <p id="calcResult" class="muted">Estimated calories: —</p>
+      </div>
+
+      <!-- ACHIEVEMENT BADGES -->
+      <div class="card">
+        <h2>Achievements</h2>
+        <div id="badgeContainer" class="badges"></div>
+        <p id="streakDisplay" class="muted">Weekly Streak: 0 days</p>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="footer">
+    Built locally — data saved in your browser (localStorage)
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+:root{
+  --bg:#0a0f1b; --card:#101827; --text:#dbe9f5; --muted:#6b6f76; --accent:#1f8ef1;
+  --success:#28a745;
+}
+*{box-sizing:border-box}
+body{font-family:Inter, Arial, sans-serif;background:var(--bg);color:var(--text);margin:0}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:var(--card);box-shadow:0 0 12px rgba(0,255,255,0.06)}
+.brand{font-weight:700;color:#0ff}
+.container{display:flex;gap:18px;padding:18px;max-width:1200px;margin:0 auto}
+.left-col{flex:1;min-width:320px}
+.right-col{width:480px;min-width:320px}
+.card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 0 16px rgba(0,255,255,0.04)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input,select{padding:8px;border-radius:8px;border:1px solid #1f2a3a;background:#0f1b27;color:#dbe9f5}
+button{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+button.ghost{background:transparent;border:1px solid var(--accent);color:var(--accent)}
+.small{padding:6px 8px;font-size:13px}
+.avatar-area{display:flex;gap:12px;align-items:center}
+.avatar-placeholder{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,#082434,#0f3b47);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);overflow:hidden}
+.profile-form input{width:100%;margin-bottom:8px}
+.muted{color:var(--muted);font-size:13px}
+.history-list{list-style:none;padding:0;margin:8px 0}
+.history-list li{padding:8px;border-radius:8px;margin-bottom:8px;background:#0b1420;display:flex;justify-content:space-between;align-items:center;border:1px solid #111a25}
+.summary-grid{display:flex;gap:12px}
+.summary-item{flex:1;padding:12px;border-radius:8px;background:linear-gradient(180deg,#07101a,#081223);text-align:center}
+.summary-value{font-size:20px;font-weight:700}
+.charts-row{display:flex;gap:12px;align-items:flex-start}
+.chart-wrap{flex:1}
+.rings{display:flex;flex-direction:column;gap:12px;align-items:center}
+.ring{background:transparent;border-radius:8px}
+.footer{text-align:center;color:var(--muted);padding:12px 0}
+
+/* WORKOUT CARDS (horizontal row) */
+.workout-cards{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+}
+.workout-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:70px;
+  flex-shrink:0;
+  cursor:pointer;
+  border:2px solid transparent;
+  border-radius:12px;
+  padding:6px;
+  text-align:center;
+  transition:transform .12s, border .12s, box-shadow .12s;
+  background:linear-gradient(180deg,#081524,#071322);
+}
+.workout-card img{
+  width:36px;
+  height:36px;
+  object-fit:cover;
+  border-radius:6px;
+  margin-bottom:6px;
+}
+.workout-card span{font-size:12px;color:var(--muted)}
+.workout-card.selected{
+  border-color:var(--accent);
+  transform:scale(1.08);
+  box-shadow:0 0 12px rgba(31,142,241,0.18);
+}
+
+/* BADGES */
+.badges{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.badge{padding:10px 14px;border:2px solid var(--accent);border-radius:12px;color:var(--accent);font-weight:700;box-shadow:0 0 8px var(--accent);opacity:0;animation:fadein .6s forwards}
+.badge.unlocked{animation:glow 1.4s infinite alternate}
+@keyframes glow{from{box-shadow:0 0 8px var(--accent)}to{box-shadow:0 0 14px #ff00ff}}
+
+/* MODAL (gender selection) */
+.modal{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);z-index:999;visibility:hidden;opacity:0;transition:opacity .18s,visibility .18s;
+}
+.modal.show{visibility:visible;opacity:1}
+.modal-content{width:360px;background:#081721;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.gender-select{display:flex;justify-content:center;gap:24px;margin-top:10px}
+.gender-option{width:110px;height:110px;border-radius:50%;background:linear-gradient(180deg,#081a22,#06131a);display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;border:3px solid transparent;transition:transform .12s,border .12s}
+.gender-option img{width:52px;height:52px;object-fit:contain;margin-bottom:8px}
+.gender-option.selected{border-color:var(--accent);transform:scale(1.06);box-shadow:0 0 14px rgba(31,142,241,0.16)}
+.modal-actions{display:flex;justify-content:center;margin-top:12px}
+
+/* responsive */
+@media(max-width:980px){
+  .container{flex-direction:column;padding:12px}
+  .right-col{width:100%}
+  .modal-content{width:92%}
+}
